@@ -1,28 +1,46 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <Sidebar :items="listMenu"/>
+    <main>
+      <Title :text="title"/>
+      <router-view></router-view>
+  </main>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+
+import Title from './components/Title.vue';
+import Sidebar from './components/menu/Sidebar.vue';
+import { Bus } from './bus';
 
 export default {
   name: 'App',
+  data: function() {
+    return {
+      title: 'Page 1',
+      listMenu: [{ id: 1, text: 'Page 1', icon: 'logo-ionic'}, { id: 2, text: 'Page 2', icon: 'leaf'}]
+    }
+  },
   components: {
-    HelloWorld
+    Title,
+    Sidebar
+  },
+  created (){
+    Bus.$on('loadPage', (newTitle) => {
+      this.title = newTitle;
+    })
   }
 }
 </script>
 
 <style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+  body {
+    background-color: #E5E5E5;
+    font-family: 'Open Sans', sans-serif;
+  }
+  main {
+    position: relative;
+    height: 100vh;
+  }
 </style>
